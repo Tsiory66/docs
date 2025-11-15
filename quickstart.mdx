@@ -9,14 +9,14 @@ description: "Activez votre hotspot OpenWiFi en moins de 10 minutes après inscr
 > (Pièce d'identité + selfie – validation sous 5 min)
 
 ---
-
+![Création d'une WiFi Zone](https://raw.githubusercontent.com/Tsiory66/docs/refs/heads/main/images/dashboard.png)
 ## 1. Créez votre première **WiFi Zone** (Hotspot)
 C’est l’identité de votre point d’accès. Chaque zone = un routeur ou un lieu physique.
 
 ### À remplir :
-- **Nom de la zone** : ex. `Café Soa - Ambohimanarina`, `Hôtel Le Palmier - Nosy Be`
+- **Nom de la zone** : ex. `WiFi Zone - A1`, 
 - **Adresse IP ou DNS du portail captif** :  
-  → Exemple : `192.168.1.1`, `hotspot.cafe.mg`, `openwifi.local`  
+  → Exemple : `192.168.1.1`, `wifi.net`, `  
   *(C’est l’adresse que vos clients verront quand ils se connectent)*
 - **Emplacement physique** :  
   → Activez la géolocalisation ou saisissez manuellement (rue, quartier, ville)
@@ -25,8 +25,8 @@ C’est l’identité de votre point d’accès. Chaque zone = un routeur ou un 
   Créer ma première zone →
 </Card>
 
-![Création d'une WiFi Zone](https://openwifi.mg/assets/quickstart/zone-create.png)
-![Exemple de zone remplie](https://openwifi.mg/assets/quickstart/zone-filled.png)
+![Création d'une WiFi Zone](https://raw.githubusercontent.com/Tsiory66/docs/refs/heads/main/images/nouveau_routeurs.pngg)
+
 
 ---
 
@@ -36,30 +36,28 @@ Définissez combien vos clients paieront pour accéder à votre WiFi.
 ### Champs obligatoires :
 | Champ | Exemple |
 |------|--------|
-| **Nom du tarif** | `1h Express`, `Journée Illimitée`, `Pack Étudiant Nuit` |
+| **Nom du tarif** | `1h Express`, `Journée Illimitée`, `Pack Travail Nuit` |
 | **Durée** | `1 heure`, `24 heures`, `Illimité (jusqu'à 23h59)` |
 | **Prix** | `500 Ar`, `2 000 Ar`, `1 500 Ar` |
-| **WiFi Zone associée** | `Café Soa - Ambohimanarina` |
+| **WiFi Zone associée** | `WiFi Zone - A1` |
 
 > Astuce : Créez un tarif **"Gratuit 5 min"** pour attirer les clients !
 
-![Création d’un tarif](https://openwifi.mg/assets/quickstart/tarif-create.png)
+![Création d’un tarif](https://raw.githubusercontent.com/Tsiory66/docs/refs/heads/main/images/liste_tarif.png)
+![Création d’un tarif](https://raw.githubusercontent.com/Tsiory66/docs/refs/heads/main/images/nouveau_tarif.png)
 
 ---
 
-## 3. Importez vos **tickets WiFi pré-générés** (optionnel mais puissant)
-Générez des codes d’accès imprimables pour vendre **hors connexion**.
+## 3. Importez vos **tickets WiFi pré-générés**
 
 ### Comment faire :
 1. Sélectionnez votre **WiFi Zone**
 2. Choisissez un **tarif**
-3. Indiquez le **nombre de tickets** (ex. 50)
-4. Téléchargez en PDF → imprimez → vendez !
+3. Importez vos tickets sous fome de cvc
 
-> Idéal pour les marchés, taxibe, écoles, événements
 
-![Génération de tickets](https://openwifi.mg/assets/quickstart/tickets-generate.png)
-![Ticket imprimé exemple](https://openwifi.mg/assets/quickstart/ticket-sample.jpg)
+![Génération de tickets](https://raw.githubusercontent.com/Tsiory66/docs/refs/heads/main/images/import_ticket.png)
+![Ticket imprimé exemple](https://raw.githubusercontent.com/Tsiory66/docs/refs/heads/main/images/liste_ticket.png)
 
 ---
 
@@ -69,7 +67,7 @@ Générez des codes d’accès imprimables pour vendre **hors connexion**.
 
 #### Méthode 1 : **Lien global de la WiFi Zone** (recommandé)
 → Copiez le lien dans **WiFi Zone → "Lien de paiement global"**  
-→ Collez-le dans votre portail captif (MikroTik, OpenWrt, TP-Link, etc.)
+→ Collez-le dans votre portail captif 
 
 > Tous les tarifs s’affichent automatiquement
 
@@ -79,5 +77,4 @@ Générez des codes d’accès imprimables pour vendre **hors connexion**.
 
 ```html
 <!-- Exemple HTML pour votre portail captif -->
-<a href="https://pay.openwifi.mg/t/1h-express-abc123" class="btn">1h → 500 Ar</a>
-<a href="https://pay.openwifi.mg/t/journee-def456" class="btn">24h → 2 000 Ar</a>
+<iframe src="https://www.youtube.com/embed/4KzFe50RQkQ"> </iframe>
