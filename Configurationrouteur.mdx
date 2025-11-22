@@ -1,108 +1,115 @@
 ---
-title: "Configuration routeur"
-description: "Guide d’installation et de configuration d’OpenWiFi sur MikroTik RouterOS"
+title: 'Configuration du routeut'
+description: 'Guide complet d’installation et de configuration OpenWiFi sur MikroTik'
 ---
 
-# Documentation OpenWiFi
+import { Card, CardGrid, Steps, Step, Tabs, Tab, Accordion, AccordionGroup, Callout } from "@mintlify/components";
 
-## Guides et instructions détaillées pour configurer et utiliser OpenWiFi sur votre Zone Wi-Fi
 
-- Configuration rapide  
-- Guides détaillés  
-- Support expert  
-- Templates prêts  
+## Configuration du routeur
 
----
+### 1. Ajouter le serveur RADIUS OpenWiFi
 
-## Introduction à OpenWiFi
+<Steps>
+  <Step title="Accéder à Winbox ou WebFig">
+    Adresse habituelle : `192.168.88.1` ou `192.168.1.1`
+  </Step>
+  <Step title="Aller dans RADIUS → +">
+    Remplir les champs suivants :
 
-Bienvenue dans la documentation d'OpenWiFi. Ce guide vous accompagnera étape par étape dans la configuration du système de paiement automatique de tickets Wi-Fi appelé OpenWiFi.
+| Paramètre             | Valeur            |
+|-----------------------|-------------------|
+| Service               | Hotspot           |
+| Address               | `100.42.177.30`   |
+| Secret                | `pari1999`        |
+| Authentication Port   | `1814`            |
+| Accounting Port       | `1815`            |
+| Timeout               | `3500 ms`         |
+| Incoming              | Cocher            |
 
-Pour une configuration réussie, nous vous recommandons de suivre les étapes dans l'ordre présenté. Chaque section est identifiée par une couleur distincte pour faciliter la navigation :
+  </Step>
+  <Step title="Supprimer l’ancien RADIUS local">
+    Supprimez tout serveur en `127.0.0.1` s’il existe
+  </Step>
+</Steps>
 
-- Bleu - Configuration du routeur  
-- Vert - Configuration du portail captif  
-- Orange - Interface d'administration  
+### 2. Activer RADIUS sur le profil Hotspot
 
-Avant de commencer, assurez-vous d'avoir :
+IP → Hotspot → Server Profiles → [votre profil]
 
-- Un compte OpenWiFi sinon créer en un [ici](inscription.php)  
-- Un routeur avec Mikrotik  
-- Une connexion Internet stable  
+Cochez :
+- Use RADIUS
+- Interim Update → `00:00:05`
 
-> **Conseil :**  
-> Si vous rencontrez des difficultés pendant la configuration, n'hésitez pas à contacter notre équipe de support technique [ici]()
+### 3. Walled Garden (accès avant connexion)
 
----
+**IP → Hotspot → Walled Garden IP List** → Ajouter (Action = Allow) :
+openwifi.pro
+efn.efaina.com
+### 4.  Configuration du portail captif
+Etapes assez technique veuillez contacter le support client.
+### 5. Création des ticket des ticket
+# Importer des tickets depuis Mikhmon vers Mana Zone
 
-## Ajout du serveur RADIUS
+Pour gérer vos tickets Wi-Fi, vous devez disposer de :  
 
-Étapes pour configurer les paramètres initiaux de votre routeur
-
-### 1. Accéder à l'interface d'administration de votre Mikrotik
-
-Connectez-vous à l'interface d'administration de votre routeur en saisissant l'adresse IP du routeur dans votre navigateur web (généralement `192.168.1.1` ou `192.168.0.1`).
-
-Utilisez les identifiants administrateur par défaut (`admin / admin` ou `admin / password`) ou vos identifiants personnalisés si vous les avez modifiés.
-
-### 2. Ajouter un serveur RADIUS
-
-Allez dans **RADIUS** et ajoutez un serveur avec :
-
-- Incoming : coché  
-- IP : `100.42.177.30`  
-- Mot de passe : `pari1999`  
-- Timeout : `3500`  
-- Authentication Port : `1814`  
-- Accounting Port : `1815`  
-- Service : cochez "Hotspot"  
-
-> **Attention :**  
-> - Si un serveur RADIUS est déjà configuré avec l'IP `127.0.0.1`, supprimez-le.  
-> - IP, mot de passe et ports peuvent être différents selon votre configuration OpenWiFi.
-
-### 3. Configurer Hotspot pour utiliser RADIUS
-
-Allez dans **Hotspot > Server Profiles** :
-
-- Cochez "Use RADIUS"  
-- Réglez "Interim Update" à `00:00:05`  
-
-### 4. Ajouter Walled Garden IP
-
-Dans **Hotspot > Walled Garden IP List**, ajoutez :
-
-- `client.ligdicash.com`  
-- `wifizone.web-ack.com`  
-- `gounspay.com`  
-- `openwifi.app`  
+- ✅ **Accès à Mikhmon** (connecté à votre routeur MikroTik)  
+- ✅ **Compte boutique sur Mana Zone**
 
 ---
 
-## Configuration du portail captif
+## 1. Accéder à l’interface Mikhmon
 
-### 1. Ajout du script JS
+1. Ouvrez votre navigateur et allez à l’adresse de votre Mikhmon :  
+   `http://192.168.88.10/mikhmon`  
+2. Connectez-vous avec vos identifiants administrateur.
 
-Dans le `<head>` de `login.html` :
+> 💡 **Astuce :**  
+> Assurez-vous que votre ordinateur est connecté au même réseau que le routeur MikroTik.
 
-```html
-<script type="text/javascript">
-function getQueryParam(variable) {
-  var query = window.location.search.substring(1);
-  var vars = query.split("&");
-  for (var i = 0; i < vars.length; i++) {
-    var pair = vars[i].split("=");
-    if (pair[0] === variable) return pair[1];
-  }
-  return false;
-}
-function init() {
-  var usernameValue = getQueryParam("username");
-  var passwordValue = getQueryParam("password");
-  if (usernameValue && passwordValue) {
-    document.login.username.value = usernameValue;
-    document.login.password.value = passwordValue;
-    document.login.submit();
-  }
-}
-</script>
+---
+
+## 2. Créer des tickets dans Mikhmon
+
+1. Dans le menu à gauche, cliquez sur **Hotspot**, puis sélectionnez le routeur actif.  
+2. Cliquez sur **Generate** ou **Users > Add**.  
+3. Renseignez les paramètres du ticket :  
+
+| Paramètre | Description |
+|-----------|-------------|
+| **Username** | Identifiant du ticket |
+| **Password** | Mot de passe du ticket |
+| **Duration** | Durée de validité (ex. 1 jour, 1 semaine) |
+| **Price** | Prix du ticket (optionnel) |
+
+4. Cliquez sur **Create** ou **Generate**.
+
+> 📌 **Note :**  
+> Les tickets apparaîtront dans la liste des utilisateurs (Users).
+
+---
+
+## 3. Exporter les tickets (CSV)
+
+1. Dans la section des utilisateurs, cliquez sur le bouton **Export**.  
+2. Choisissez le format **CSV** *(seul le format CSV est accepté)*.  
+3. Téléchargez le fichier généré sur votre ordinateur.
+
+> 💡 **Conseil :**  
+> Conservez le fichier CSV dans un endroit sûr, il contient toutes les informations de vos tickets.
+
+---
+
+## 4. Importer les tickets dans Mana Zone
+
+1. Connectez-vous à votre compte boutique sur **OpenWiFi**.  
+2. Dans le menu, cliquez sur **Ticket** puis choisissez votre site.  
+3. Accédez à la section **Importer tickets**. Choisissez le routeur/Wifi zone associés 
+4. Cliquez sur **Choisir un fichier**, sélectionnez le fichier CSV exporté depuis Mikhmon.  
+5. Validez l’importation.
+
+> 📌 **Résultat :**  
+> Les tickets seront ajoutés à votre site et visibles dans la section **Tickets**.
+
+---
+

@@ -5,31 +5,6 @@ description: 'Guide complet d’installation et de configuration OpenWiFi sur Mi
 
 import { Card, CardGrid, Steps, Step, Tabs, Tab, Accordion, AccordionGroup, Callout } from "@mintlify/components";
 
-# Bienvenue dans la documentation OpenWiFi
-
-Le système de paiement automatique de tickets Wi-Fi pour routeurs MikroTik.
-
-<CardGrid>
-  <Card title="Configuration rapide" icon="zap" href="#configuration-du-routeur">
-    Routeur + portail en moins de 10 minutes
-  </Card>
-  <Card title="Portails prêts à l’emploi" icon="download" href="#telecharger-un-portail-captif">
-    Templates Voucher & Non-Voucher
-  </Card>
-  <Card title="Support technique" icon="life-ring" href="#support">
-    WhatsApp +226 67 00 90 24
-  </Card>
-  <Card title="Créer un compte" icon="user-plus" href="https://admin.openwifi.app/inscription.php">
-    Inscription gratuite
-  </Card>
-</CardGrid>
-
-<Callout type="info">
-  **Prérequis** :
-  - Un routeur MikroTik (RouterOS ≥ 6.45 recommandé)
-  - Un compte OpenWiFi [](https://admin.openwifi.app/inscription.php)
-  - Connexion Internet stable sur le routeur
-</Callout>
 
 ## Configuration du routeur
 
@@ -69,3 +44,72 @@ Cochez :
 ### 3. Walled Garden (accès avant connexion)
 
 **IP → Hotspot → Walled Garden IP List** → Ajouter (Action = Allow) :
+openwifi.pro
+efn.efaina.com
+### 4.  Configuration du portail captif
+Etapes assez technique veuillez contacter le support client.
+### 5. Création des ticket des ticket
+# Importer des tickets depuis Mikhmon vers Mana Zone
+
+Pour gérer vos tickets Wi-Fi, vous devez disposer de :  
+
+- ✅ **Accès à Mikhmon** (connecté à votre routeur MikroTik)  
+- ✅ **Compte boutique sur Mana Zone**
+
+---
+
+## 1. Accéder à l’interface Mikhmon
+
+1. Ouvrez votre navigateur et allez à l’adresse de votre Mikhmon :  
+   `http://192.168.88.10/mikhmon`  
+2. Connectez-vous avec vos identifiants administrateur.
+
+> 💡 **Astuce :**  
+> Assurez-vous que votre ordinateur est connecté au même réseau que le routeur MikroTik.
+
+---
+
+## 2. Créer des tickets dans Mikhmon
+
+1. Dans le menu à gauche, cliquez sur **Hotspot**, puis sélectionnez le routeur actif.  
+2. Cliquez sur **Generate** ou **Users > Add**.  
+3. Renseignez les paramètres du ticket :  
+
+| Paramètre | Description |
+|-----------|-------------|
+| **Username** | Identifiant du ticket |
+| **Password** | Mot de passe du ticket |
+| **Duration** | Durée de validité (ex. 1 jour, 1 semaine) |
+| **Price** | Prix du ticket (optionnel) |
+
+4. Cliquez sur **Create** ou **Generate**.
+
+> 📌 **Note :**  
+> Les tickets apparaîtront dans la liste des utilisateurs (Users).
+
+---
+
+## 3. Exporter les tickets (CSV)
+
+1. Dans la section des utilisateurs, cliquez sur le bouton **Export**.  
+2. Choisissez le format **CSV** *(seul le format CSV est accepté)*.  
+3. Téléchargez le fichier généré sur votre ordinateur.
+
+> 💡 **Conseil :**  
+> Conservez le fichier CSV dans un endroit sûr, il contient toutes les informations de vos tickets.
+
+---
+
+## 4. Importer les tickets dans Mana Zone
+
+1. Connectez-vous à votre compte boutique sur **OpenWiFi**.  
+2. Dans le menu, cliquez sur **Ticket** puis choisissez votre site.  
+3. Accédez à la section **Importer tickets**. Choisissez le routeur/Wifi zone associés 
+4. Cliquez sur **Choisir un fichier**, sélectionnez le fichier CSV exporté depuis Mikhmon.  
+5. Validez l’importation.
+
+> 📌 **Résultat :**  
+> Les tickets seront ajoutés à votre site et visibles dans la section **Tickets**.
+
+---
+
