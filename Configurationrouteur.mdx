@@ -1,5 +1,108 @@
 ---
-title: 'New file'
-description: 'Description of your new file.'
+title: "Configuration routeur"
+description: "Guide d’installation et de configuration d’OpenWiFi sur MikroTik RouterOS"
 ---
 
+# Documentation OpenWiFi
+
+## Guides et instructions détaillées pour configurer et utiliser OpenWiFi sur votre Zone Wi-Fi
+
+- Configuration rapide  
+- Guides détaillés  
+- Support expert  
+- Templates prêts  
+
+---
+
+## Introduction à OpenWiFi
+
+Bienvenue dans la documentation d'OpenWiFi. Ce guide vous accompagnera étape par étape dans la configuration du système de paiement automatique de tickets Wi-Fi appelé OpenWiFi.
+
+Pour une configuration réussie, nous vous recommandons de suivre les étapes dans l'ordre présenté. Chaque section est identifiée par une couleur distincte pour faciliter la navigation :
+
+- Bleu - Configuration du routeur  
+- Vert - Configuration du portail captif  
+- Orange - Interface d'administration  
+
+Avant de commencer, assurez-vous d'avoir :
+
+- Un compte OpenWiFi sinon créer en un [ici](inscription.php)  
+- Un routeur avec Mikrotik  
+- Une connexion Internet stable  
+
+> **Conseil :**  
+> Si vous rencontrez des difficultés pendant la configuration, n'hésitez pas à contacter notre équipe de support technique [ici]()
+
+---
+
+## Ajout du serveur RADIUS
+
+Étapes pour configurer les paramètres initiaux de votre routeur
+
+### 1. Accéder à l'interface d'administration de votre Mikrotik
+
+Connectez-vous à l'interface d'administration de votre routeur en saisissant l'adresse IP du routeur dans votre navigateur web (généralement `192.168.1.1` ou `192.168.0.1`).
+
+Utilisez les identifiants administrateur par défaut (`admin / admin` ou `admin / password`) ou vos identifiants personnalisés si vous les avez modifiés.
+
+### 2. Ajouter un serveur RADIUS
+
+Allez dans **RADIUS** et ajoutez un serveur avec :
+
+- Incoming : coché  
+- IP : `100.42.177.30`  
+- Mot de passe : `pari1999`  
+- Timeout : `3500`  
+- Authentication Port : `1814`  
+- Accounting Port : `1815`  
+- Service : cochez "Hotspot"  
+
+> **Attention :**  
+> - Si un serveur RADIUS est déjà configuré avec l'IP `127.0.0.1`, supprimez-le.  
+> - IP, mot de passe et ports peuvent être différents selon votre configuration OpenWiFi.
+
+### 3. Configurer Hotspot pour utiliser RADIUS
+
+Allez dans **Hotspot > Server Profiles** :
+
+- Cochez "Use RADIUS"  
+- Réglez "Interim Update" à `00:00:05`  
+
+### 4. Ajouter Walled Garden IP
+
+Dans **Hotspot > Walled Garden IP List**, ajoutez :
+
+- `client.ligdicash.com`  
+- `wifizone.web-ack.com`  
+- `gounspay.com`  
+- `openwifi.app`  
+
+---
+
+## Configuration du portail captif
+
+### 1. Ajout du script JS
+
+Dans le `<head>` de `login.html` :
+
+```html
+<script type="text/javascript">
+function getQueryParam(variable) {
+  var query = window.location.search.substring(1);
+  var vars = query.split("&");
+  for (var i = 0; i < vars.length; i++) {
+    var pair = vars[i].split("=");
+    if (pair[0] === variable) return pair[1];
+  }
+  return false;
+}
+function init() {
+  var usernameValue = getQueryParam("username");
+  var passwordValue = getQueryParam("password");
+  if (usernameValue && passwordValue) {
+    document.login.username.value = usernameValue;
+    document.login.password.value = passwordValue;
+    document.login.submit();
+  }
+}
+</script>
