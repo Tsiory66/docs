@@ -1,94 +1,71 @@
 ---
-title: 'Development'
-description: 'Preview changes locally to update your docs'
+title: 'Configuration du routeut'
+description: 'Guide complet d’installation et de configuration OpenWiFi sur MikroTik'
 ---
 
-<Info>
-  **Prerequisites**:
-  - Node.js version 19 or higher
-  - A docs repository with a `docs.json` file
-</Info>
+import { Card, CardGrid, Steps, Step, Tabs, Tab, Accordion, AccordionGroup, Callout } from "@mintlify/components";
 
-Follow these steps to install and run Mintlify on your operating system.
+# Bienvenue dans la documentation OpenWiFi
+
+Le système de paiement automatique de tickets Wi-Fi pour routeurs MikroTik.
+
+<CardGrid>
+  <Card title="Configuration rapide" icon="zap" href="#configuration-du-routeur">
+    Routeur + portail en moins de 10 minutes
+  </Card>
+  <Card title="Portails prêts à l’emploi" icon="download" href="#telecharger-un-portail-captif">
+    Templates Voucher & Non-Voucher
+  </Card>
+  <Card title="Support technique" icon="life-ring" href="#support">
+    WhatsApp +226 67 00 90 24
+  </Card>
+  <Card title="Créer un compte" icon="user-plus" href="https://admin.openwifi.app/inscription.php">
+    Inscription gratuite
+  </Card>
+</CardGrid>
+
+<Callout type="info">
+  **Prérequis** :
+  - Un routeur MikroTik (RouterOS ≥ 6.45 recommandé)
+  - Un compte OpenWiFi [](https://admin.openwifi.app/inscription.php)
+  - Connexion Internet stable sur le routeur
+</Callout>
+
+## Configuration du routeur
+
+### 1. Ajouter le serveur RADIUS OpenWiFi
 
 <Steps>
-<Step title="Install the Mintlify CLI">
+  <Step title="Accéder à Winbox ou WebFig">
+    Adresse habituelle : `192.168.88.1` ou `192.168.1.1`
+  </Step>
+  <Step title="Aller dans RADIUS → +">
+    Remplir les champs suivants :
 
-```bash
-npm i -g mint
-```
-</Step>
+| Paramètre             | Valeur            |
+|-----------------------|-------------------|
+| Service               | Hotspot           |
+| Address               | `100.42.177.30`   |
+| Secret                | `pari1999`        |
+| Authentication Port   | `1814`            |
+| Accounting Port       | `1815`            |
+| Timeout               | `3500 ms`         |
+| Incoming              | Cocher            |
 
-<Step title="Preview locally">
-
-Navigate to your docs directory where your `docs.json` file is located, and run the following command:
-
-```bash
-mint dev
-```
-
-A local preview of your documentation will be available at `http://localhost:3000`.
-
-</Step>
+  </Step>
+  <Step title="Supprimer l’ancien RADIUS local">
+    Supprimez tout serveur en `127.0.0.1` s’il existe
+  </Step>
 </Steps>
 
-## Custom ports
+### 2. Activer RADIUS sur le profil Hotspot
 
-By default, Mintlify uses port 3000. You can customize the port Mintlify runs on by using the `--port` flag. For example, to run Mintlify on port 3333, use this command:
+IP → Hotspot → Server Profiles → [votre profil]
 
-```bash
-mint dev --port 3333
-```
+Cochez :
+- Use RADIUS
+- Interim Update → `00:00:05`
 
-If you attempt to run Mintlify on a port that's already in use, it will use the next available port:
+### 3. Walled Garden (accès avant connexion)
 
-```md
-Port 3000 is already in use. Trying 3001 instead.
-```
-
-## Mintlify versions
-
-Please note that each CLI release is associated with a specific version of Mintlify. If your local preview does not align with the production version, please update the CLI:
-
-```bash
-npm mint update
-```
-
-## Validating links
-
-The CLI can assist with validating links in your documentation. To identify any broken links, use the following command:
-
-```bash
-mint broken-links
-```
-
-## Deployment
-
-If the deployment is successful, you should see the following:
-
-<Frame>
-  <img src="/images/checks-passed.png" alt="Screenshot of a deployment confirmation message that says All checks have passed." style={{ borderRadius: '0.5rem' }} />
-</Frame>
-
-## Code formatting
-
-We suggest using extensions on your IDE to recognize and format MDX. If you're a VSCode user, consider the [MDX VSCode extension](https://marketplace.visualstudio.com/items?itemName=unifiedjs.vscode-mdx) for syntax highlighting, and [Prettier](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode) for code formatting.
-
-## Troubleshooting
-
-<AccordionGroup>
-  <Accordion title='Error: Could not load the "sharp" module using the darwin-arm64 runtime'>
-
-    This may be due to an outdated version of node. Try the following:
-    1. Remove the currently-installed version of the CLI: `npm remove -g mint`
-    2. Upgrade to Node v19 or higher.
-    3. Reinstall the CLI: `npm i -g mint`
-  </Accordion>
-
-  <Accordion title="Issue: Encountering an unknown error">
-  
-    Solution: Go to the root of your device and delete the `~/.mintlify` folder. Then run `mint dev` again.
-  </Accordion>
-</AccordionGroup>
-
-Curious about what changed in the latest CLI version? Check out the [CLI changelog](https://www.npmjs.com/package/mintlify?activeTab=versions).
+**IP → Hotspot → Walled Garden IP List** → Ajouter (Action = Allow) :
